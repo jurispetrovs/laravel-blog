@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserAddsArticle;
+use App\Events\UserDeletesArticle;
 use App\Models\Article;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ArticlesController extends Controller
 {
@@ -28,6 +32,12 @@ class ArticlesController extends Controller
         $article = (new Article)->fill($request->all());
         $article->user()->associate(auth()->user());
         $article->save();
+
+
+        /** @var User $user */
+        $user = auth()->user();
+
+        event(new UserAddsArticle($user));
 
         return redirect()->route('articles.index');
     }
@@ -62,6 +72,11 @@ class ArticlesController extends Controller
         $this->authorize('delete', $article);
 
         $article->delete();
+
+        /** @var User $user */
+        $user = auth()->user();
+
+        event(new UserDeletesArticle($user));
 
         return redirect()->route('articles.index');
     }
