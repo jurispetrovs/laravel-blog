@@ -235,4 +235,26 @@ class ArticlesControllerTest extends TestCase
 
         $response->assertStatus(403);
     }
+
+    public function testUserArticlesCount()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $this->followingRedirects();
+
+        $response = $this->post(route('articles.store'), [
+            'title' => 'Example title',
+            'content' => 'Example content'
+        ]);
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'articles_count' => 1
+        ]);
+
+        $this->assertEquals(1, $user->articles_count);
+    }
 }
