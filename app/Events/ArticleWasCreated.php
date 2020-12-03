@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Models\Article;
+use App\Models\User;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
@@ -10,10 +10,10 @@ class ArticleWasCreated
 {
     use Dispatchable, SerializesModels;
 
-    public $article;
+    public $user;
 
-    public function __construct(Article $article)
+    public function __construct(User $user)
     {
-        $this->article = $article;
+        $this->user = $user;
     }
 }

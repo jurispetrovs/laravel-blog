@@ -3,12 +3,8 @@
 namespace App\Providers;
 
 use App\Events\ArticleWasCreated;
-use App\Events\UserAddsArticle;
-use App\Events\UserDeletesArticle;
-use App\Listeners\ArticleWasCreated\Test2Listener;
-use App\Listeners\ArticleWasCreated\TestListener;
-use App\Listeners\UserAddsArticle\AddUserArticlesCount;
-use App\Listeners\UserDeletesArticle\ReduceUserArticlesCount;
+use App\Listeners\ArticleWasCreated\UpdateArticlesCount;
+use App\Listeners\Registered\GeneratePasswordAndSendEmail;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -23,18 +19,11 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         Registered::class => [
-            SendEmailVerificationNotification::class,
+            GeneratePasswordAndSendEmail::class,
         ],
         ArticleWasCreated::class => [
-            TestListener::class,
-            Test2Listener::class
+            UpdateArticlesCount::class,
         ],
-        UserAddsArticle::class => [
-          AddUserArticlesCount::class
-        ],
-        UserDeletesArticle::class => [
-            ReduceUserArticlesCount::class
-        ]
     ];
 
     /**

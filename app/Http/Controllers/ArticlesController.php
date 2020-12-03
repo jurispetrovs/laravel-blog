@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ArticleWasCreated;
 use App\Events\UserAddsArticle;
 use App\Events\UserDeletesArticle;
 use App\Models\Article;
@@ -37,7 +38,7 @@ class ArticlesController extends Controller
         /** @var User $user */
         $user = auth()->user();
 
-        event(new UserAddsArticle($user));
+        event(new ArticleWasCreated($user));
 
         return redirect()->route('articles.index');
     }
@@ -76,7 +77,7 @@ class ArticlesController extends Controller
         /** @var User $user */
         $user = auth()->user();
 
-        event(new UserDeletesArticle($user));
+        event(new ArticleWasCreated($user));
 
         return redirect()->route('articles.index');
     }
